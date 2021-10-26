@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'/>
+        <title>Running Key Cipher</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+       
+        <div style="padding: 20px; width:80%; margin:auto; margin-top:30px;">
+            <a class="btn btn-primary" href="index.html" role="button" style="float: right;">Home</a>
+            <h1>Running key Cipher</h1>
+            <p>In classical cryptography, the running key cipher is a type of polyalphabetic substitution cipher in which a text, typically from a book, is used to provide a very long keystream. Usually, the book to be used would be agreed ahead of time, while the passage to be used would be chosen randomly for each message and secretly indicated somewhere in the message.</p>
+
+            <details>
+                <summary>Encryption matrix</summary>
+                <img src="Capture.PNG" alt="encryption matrix">
+            </details>
+            <h3>check it out</h3>
+            <div class="form-group row">
+                <label class="col-sm-1 col-form-label" >Enter text: </label>
+                <div class="col-sm-10">
+                    <textarea id="text" class="form-control" aria-label="With textarea" placeholder="type plain/cipher text"></textarea>
+                    
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="key" class="col-sm-1 col-form-label">Enter key: </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="key" placeholder="enter key of same size as above">
+                </div>
+            </div>
+            <button onclick="encrypt()" class="btn btn-primary">Encrypt</button>
+            <button onclick="decrypt()" class="btn btn-primary">Decrypt</button>
+            <div style="margin: 10px;">
+                <p id="given_plaintext"></p>
+                <p id="given_ciphertext"></p>
+                <p id="used_key"></p>
+                <p id="result_plaintext"></p>
+                <p id="result_ciphertext"></p>
+            </div>  
+        </div> 
+        <script>
+            
+            function encrypt(){
+                var plaintext=document.getElementById("text").value;
+                var key=document.getElementById('key').value;
+                if(plaintext=="")
+                {
+                    window.alert("oops! plain text is empty");
+                    return;
+                }
+                if(key=="")
+                {
+                    window.alert("oops! key is empty");
+                    return;
+                }
+                if(plaintext.length>key.length)
+                {
+                    window.alert("oops! enter a valid key");
+                    return;
+                }
+                var ciphertext="";
+                var arr = new Array(26);
+                for(let i=0;i<26;i++)
+                {
+                    var temp=new Array(26);
+                    var val=i;
+                    for(let j=0;j<26;j++)
+                    {
+                        temp[j]=String.fromCharCode(val+97);
+                        val+=1;
+                        val%=26;
+                    }
+                    arr[i]=temp;
+                }
+                for(let i=0;i<plaintext.length;i++)
+                {
+                    var p=plaintext.charCodeAt(i)-97;
+                    var q=key.charCodeAt(i)-97;
+                    ciphertext+=arr[p][q];
+                }
+                document.getElementById("given_plaintext").innerHTML="given plaintext: "+plaintext;
+                document.getElementById("used_key").innerHTML="key used: "+ key;
+                document.getElementById("result_ciphertext").innerHTML="cipher text: " +ciphertext;
+                document.getElementById("given_ciphertext").innerHTML="";
+                document.getElementById("result_plaintext").innerHTML="";
+                return;
+            } 
+             function decrypt(){
+                var ciphertext=document.getElementById("text").value;
+                var key=document.getElementById('key').value;
+                if(ciphertext=="")
+                {
+                    window.alert("oops! cipher text is empty");
+                    return;
+                }
+                if(key=="")
+                {
+                    window.alert("oops! key is empty");
+                    return;
+                }
+                if(ciphertext.length>key.length)
+                {
+                    window.alert("oops! enter a valid key")
+                }
+                var plaintext="";
+                var arr = new Array(26);
+                for(let i=0;i<26;i++)
+                {
+                    var temp=new Array(26);
+                    var val=i;
+                    for(let j=0;j<26;j++)
+                    {
+                        temp[j]=String.fromCharCode(val+97);
+                        val+=1;
+                        val%=26;
+                    }
+                    arr[i]=temp;
+                }
+                for(let i=0;i<ciphertext.length;i++)
+                {
+                    var p=key.charCodeAt(i)-97;
+                    for(let j=0;j<26;j++)
+                    {
+                        if(arr[j][p]==ciphertext.charAt(i))
+                        {
+                            plaintext+=String.fromCharCode(j+97);
+                      
+                        }
+                    }
+                }
+                document.getElementById("given_ciphertext").innerHTML="given ciphertext: "+ciphertext;
+                document.getElementById("used_key").innerHTML="key used: "+key;
+                document.getElementById("result_plaintext").innerHTML="plain text: " + plaintext;
+                document.getElementById("given_plaintext").innerHTML="";
+                document.getElementById("result_ciphertext").innerHTML="";
+                return;
+            } 
+        </script>
+    </body>
+</html>

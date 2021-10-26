@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'/>
+        <title>Affine Cipher</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+       
+        <div style="padding: 20px; width:80%; margin:auto; margin-top:30px;">
+            <a class="btn btn-primary" href="index.html" role="button" style="float: right;">Home</a>
+            <h1>Affine Cipher</h1>
+            <p>Let P = C = ℤ<sub>26</sub> and let K = 𝑎, 𝑏 ∈ ℤ<sub>26</sub> × ℤ<sub>26</sub>:gcd(𝑎,26) = 1. For 𝑘=(𝑎,𝑏) ∈ K, define 𝑒<sub>𝑘</sub>𝑥=𝑎𝑥+𝑏 𝑚𝑜𝑑26 and 𝑑<sub>𝑘</sub>(𝑦)=𝑎<sup>−1</sup>(𝑦−𝑏)𝑚𝑜𝑑26.x,y ∈ ℤ<sub>26</sub></p>
+       
+            <h3>check it out</h3>
+            <div class="form-group row">
+                <label class="col-sm-1 col-form-label" >Enter text: </label>
+                <div class="col-sm-10">
+                    <textarea id="text" class="form-control" aria-label="With textarea" placeholder="type plain/cipher text"></textarea>
+                    
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="key" class="col-sm-1 col-form-label">Enter a: </label>
+                <div class="col-sm-10" >
+                    <input type="text" class="form-control" id="a" placeholder="enter a" >
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="key" class="col-sm-1 col-form-label">Enter b: </label>
+                <div class="col-sm-10" >
+                    <input type="text" class="form-control" id="b" placeholder="enter b" >
+
+                </div>
+            </div>
+            <button onclick="encrypt()" class="btn btn-primary">Encrypt</button>
+            <button onclick="decrypt()" class="btn btn-primary">Decrypt</button>
+            <div style="margin: 10px;">
+                <p id="given_plaintext"></p>
+                <p id="given_ciphertext"></p>
+                <p id="used_key"></p>
+                <p id="result_plaintext"></p>
+                <p id="result_ciphertext"></p>
+            </div>  
+        </div> 
+        <script>
+            function gcd( a, b)
+            {
+                if (!b) {
+                    return a;
+                }
+                return gcd(b, a % b);
+            }
+            function encrypt(){
+                var plaintext=document.getElementById("text").value;
+                var a=document.getElementById('a').value;
+                a=parseInt(a);
+                var b=document.getElementById('b').value;
+                b=parseInt(b);
+                
+                if(plaintext=="")
+                {
+                    window.alert("oops! plain text is empty");
+                    return;
+                }
+                if(a=="")
+                {
+                    window.alert("oops! a is empty");
+                    return;
+                }
+                if(b=="")
+                {
+                    window.alert("oops! b is empty");
+                    return;
+                }
+                g=gcd(a,26);
+                if(g!=1)
+                {
+                    window.alert("Enter valid a");
+                    return;
+                }
+                ciphertext="";
+                for(var i=0;i<plaintext.length;i++)
+                {
+                    var x=plaintext.charCodeAt(i)-97;
+                    var y= a*x+b;
+                    y%=26;
+                    ciphertext+=String.fromCharCode(y+97);
+                }
+                document.getElementById("given_plaintext").innerHTML="given plaintext: "+plaintext;
+                document.getElementById("used_key").innerHTML="key: "+ a;
+                document.getElementById("result_ciphertext").innerHTML="cipher text: " +ciphertext;
+                document.getElementById("given_ciphertext").innerHTML="";
+                document.getElementById("result_plaintext").innerHTML="";
+            }
+            function decrypt(){
+                var ciphertext=document.getElementById("text").value;
+                var a=document.getElementById('a').value;
+                a=parseInt(a);
+                var b=document.getElementById('b').value;
+                b=parseInt(b);
+                
+                if(ciphertext=="")
+                {
+                    window.alert("oops! cipher text is empty");
+                    return;
+                }
+                if(a==="")
+                {
+                    window.alert("oops! a is empty");
+                    return;
+                }
+                if(b=="")
+                {
+                    window.alert("oops! b is empty");
+                    return;
+                }
+                g=gcd(a,26);
+                if(g!=1)
+                {
+                    window.alert("Enter valid a");
+                    return;
+                }
+                var flag=0,a_inv;
+                var plaintext="";
+                for (var i = 0; i < 26; i++)
+                {
+                    flag = (a * i) % 26;
+        
+                    // Check if (a*i)%26 == 1,
+                    // then i will be the multiplicative inverse of a
+                    if (flag == 1)
+                    {
+                        a_inv = i;
+                    }
+                }
+                window.alert(a_inv);
+                
+                for(var i=0;i<ciphertext.length;i++)
+                {
+                    var x=a_inv *((ciphertext.charCodeAt(i) + 97 - b));
+                    x%=26;
+                    //window.alert(x);
+                    plaintext+=String.fromCharCode(x+97);
+                }
+                document.getElementById("given_plaintext").innerHTML="";
+                document.getElementById("result_ciphertext").innerHTML="";
+                document.getElementById("given_ciphertext").innerHTML="given ciphertext: "+ciphertext;
+                document.getElementById("used_key").innerHTML="a used: "+a;
+                document.getElementById("result_plaintext").innerHTML="plain text: " + plaintext;
+            }
+            
+        </script>
+    </body>
+</html>
+
+

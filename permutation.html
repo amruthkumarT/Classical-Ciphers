@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'/>
+        <title>Permutaion Cipher</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+       
+        <div style="padding: 20px; width:80%; margin:auto; margin-top:30px;">
+            <a class="btn btn-primary" href="index.html" role="button" style="float: right;">Home</a>
+            <h1>Permutaiton Cipher</h1>
+            <p>Let <i>m</i> be a positive integer. Let P=C=(ℤ<sub>26</sub>)<sup>m</sup> and let K consists of all permutations of (1,2,....m). For a key &pi; we define <i>e</i><sub>&pi;</sub> (<i>x<sub>1</sub>, x<sub>2</sub>....x<sub>m</sub> = (x<sub>&pi;(1)</sub>,x<sub>&pi;(2)</sub>....x<sub>&pi(m)</sub></i> and  <i>d<sub>&pi;</sub>(y<sub>1</sub>, y<sub>2</sub>.....y<sub>m</sub>) = (y<sub>&pi;<sup>-1</sup>(1)</sub>....y<sub>&pi;<sup>-1</sup>(m)</sub>)</i> where &pi;<sup>-1</sup> is the inverse permutaion of &pi;</p>
+       
+            <h3>check it out</h3>
+            <div class="form-group row">
+                <label class="col-sm-1 col-form-label" >Enter text: </label>
+                <div class="col-sm-10">
+                    <textarea id="text" class="form-control" aria-label="With textarea" placeholder="type plain/cipher text"></textarea>
+                    
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="key" class="col-sm-1 col-form-label">Enter key: </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="key" placeholder="enter space seperated digits. eg:- 3 6 2 1 5 4">
+                </div>
+            </div>
+            <button onclick="encrypt()" class="btn btn-primary">Encrypt</button>
+            <button onclick="decrypt()" class="btn btn-primary">Decrypt</button>
+            <div style="margin: 10px;">
+                <p id="given_plaintext"></p>
+                <p id="given_ciphertext"></p>
+                <p id="used_key"></p>
+                <p id="result_plaintext"></p>
+                <p id="result_ciphertext"></p>
+            </div>  
+        </div> 
+        <script>
+            
+            function encrypt(){
+                var plaintext=document.getElementById("text").value;
+                var key=document.getElementById('key').value;
+                key=key.split(" ");
+                
+                if(plaintext=="")
+                {
+                    window.alert("oops! plain text is empty");
+                    return;
+                }
+                if(key=="")
+                {
+                    window.alert("oops! key is empty");
+                    return;
+                }
+                var strlen=plaintext.length, keylen=key.length;
+                
+                if(strlen%keylen!=0)
+                {
+                    window.alert("oops! enter a valid key");
+                    return;
+                }
+                key1=[];
+                for(var i=0;i<keylen;i++)
+                {
+                    key1.push(parseInt(key[i]));
+                    var num=parseInt(key[i]);
+                    if(num<=0 || num>keylen)
+                    {
+                        window.alert("enter digits in the range 0-9");
+                        return;
+                    }
+                }
+                key1.sort(function(a, b) {
+                            return a - b;
+                        });
+               //window.alert(key1);
+                for(var i=0;i<keylen;i++)
+                {
+                    if(parseInt(key1[i])!=i+1)
+                    {
+                        window.alert("enter a valid permutation");
+                        return;
+                    }
+                }
+                // have to check if the given key is a permutaion or not
+                var ciphertext="";
+                for(var i=0;i<strlen;i+=keylen)
+                {
+                    for(var j=i;j<i+keylen;j++)
+                    {
+                        var p=parseInt(key[j]);
+                        ciphertext+=plaintext.charAt(i+p-1);
+                    }
+                }
+                document.getElementById("given_plaintext").innerHTML="given plaintext: "+plaintext;
+                document.getElementById("used_key").innerHTML="key: "+ key;
+                document.getElementById("result_ciphertext").innerHTML="cipher text: " +ciphertext;
+                document.getElementById("given_ciphertext").innerHTML="";
+                document.getElementById("result_plaintext").innerHTML="";
+            }
+            function decrypt(){
+                var ciphertext=document.getElementById("text").value;
+                var key=document.getElementById('key').value;
+                key=key.split(" ");
+                
+                if(ciphertext=="")
+                {
+                    window.alert("oops! cipher text is empty");
+                    return;
+                }
+                if(key=="")
+                {
+                    window.alert("oops! key is empty");
+                    return;
+                }
+                var strlen=ciphertext.length, keylen=key.length;
+                
+                if(strlen%keylen!=0)
+                {
+                    window.alert("oops! enter a valid key");
+                    return;
+                }
+                key1=[];
+                for(var i=0;i<keylen;i++)
+                {
+                    key1.push(parseInt(key[i]));
+                    var num=parseInt(key[i]);
+                    if(num<=0 || num>keylen)
+                    {
+                        window.alert("enter digits in the range 0-9");
+                        return;
+                    }
+                }
+                key1.sort(function(a, b) {
+                            return a - b;
+                        });
+
+                for(var i=0;i<keylen;i++)
+                {
+                    if(parseInt(key1[i])!=i+1)
+                    {
+                        window.alert("enter a valid permutation");
+                        return;
+                    }
+                }
+                var plaintext="";
+                for(var i=0;i<strlen;i+=keylen)
+                {
+                    for(var j=i;j<i+keylen;j++)
+                    {
+                        var p=parseInt(key[j]);
+                        plaintext+=ciphertext.charAt(i+p-1);
+                    }
+                }
+                document.getElementById("given_plaintext").innerHTML="";
+                document.getElementById("result_ciphertext").innerHTML="";
+                document.getElementById("given_ciphertext").innerHTML="given ciphertext: "+ciphertext;
+                document.getElementById("used_key").innerHTML="key used: "+key;
+                document.getElementById("result_plaintext").innerHTML="plain text: " + plaintext;
+            }
+            
+        </script>
+    </body>
+</html>
