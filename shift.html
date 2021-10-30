@@ -2,31 +2,28 @@
 <html>
     <head>
         <meta charset='UTF-8'/>
-        <title>AutoKey Cipher</title>
+        <title>Shift Cipher</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
     <body>
        
         <div style="padding: 20px; width:80%; margin:auto; margin-top:30px;">
             <a class="btn btn-primary" href="index.html" role="button" style="float: right;">Home</a>
-            <h1>Auto Key Cipher</h1>
-            <p>Autokey Cipher is a polyalphabetic substitution cipher. In this cipher, the key is a stream of subkeys which is used to encrypt the corresponding character in the plaintext. </p>
-            <ul>
-                <li>For encryption: C<sub>i</sub> = (P<sub>i</sub> + K<sub>i</sub> ) mod 26</li>
-                <li>For decryption: P<sub>i</sub> = (C<sub>i</sub> - K<sub>i</sub> ) mod 26</li> </li>
-            </ul>
+            <h1>Shift Cipher</h1>
+            <p>Shift Cipher is one of the earliest and the simplest cryptosystems. A given plaintext is encrypted into a ciphertext by shifting each letter of the given plaintext by n positions. </p>
+       
             <h3>check it out</h3>
             <div class="form-group row">
                 <label class="col-sm-1 col-form-label" >Enter text: </label>
                 <div class="col-sm-10">
-                    <textarea id="text" class="form-control" aria-label="With textarea" placeholder="type plain/cipher text">hello</textarea>
+                    <textarea id="text" class="form-control" aria-label="With textarea" placeholder="type plain/cipher text">xyz</textarea>
                     
                 </div>
             </div>
             <div class="form-group row">
                 <label for="key" class="col-sm-1 col-form-label">Enter key: </label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="key" placeholder="type key" value="n">
+                    <input type="text" class="form-control" id="key" placeholder="enter a digit" value="10">
                 </div>
             </div>
             <button onclick="encrypt()" class="btn btn-primary">Encrypt</button>
@@ -43,7 +40,8 @@
             
             function encrypt(){
                 var plaintext=document.getElementById("text").value;
-                var key=document.getElementById('key').value;
+                var key=document.getElementById('key').value; 
+                key=parseInt(key);  
                 if(plaintext=="")
                 {
                     window.alert("oops! plain text is empty");
@@ -54,22 +52,16 @@
                     window.alert("oops! key is empty");
                     return;
                 }
-                var diff=plaintext.length-key.length, j=0,len=plaintext.length;
-                for(let i=diff;i>0;i--)
-                {
-                    key+=plaintext.charAt(j);
-                    j=j+1;
-                    j%=len;
-                }
                 var ciphertext="";
-                for(let i=0;i<plaintext.length;i++)
+                for(var i=0;i<plaintext.length;i++)
                 {
-                    var temp=( plaintext.charCodeAt(i)-97 + key.charCodeAt(i)-97 )%26 + 97;
-                    ciphertext+=String.fromCharCode(temp);
+                    var x=plaintext.charCodeAt(i)-97;
+                    x+=key;
+                    x%=26;
+                    ciphertext+=String.fromCharCode(x+97);
                 }
-
                 document.getElementById("given_plaintext").innerHTML="given plaintext: "+plaintext;
-                document.getElementById("used_key").innerHTML="key generated: "+ key.slice(0,len);
+                document.getElementById("used_key").innerHTML="key: "+ key;
                 document.getElementById("result_ciphertext").innerHTML="cipher text: " +ciphertext;
                 document.getElementById("given_ciphertext").innerHTML="";
                 document.getElementById("result_plaintext").innerHTML="";
@@ -77,10 +69,10 @@
             function decrypt(){
                 var ciphertext=document.getElementById("text").value;
                 var key=document.getElementById('key').value;
-                var diff=ciphertext.length-key.length, j=0,len=ciphertext.length;
+                key=parseInt(key);
                 if(ciphertext=="")
                 {
-                    window.alert("oops! plain text is empty");
+                    window.alert("oops! cipher text is empty");
                     return;
                 }
                 if(key=="")
@@ -88,25 +80,19 @@
                     window.alert("oops! key is empty");
                     return;
                 }
-                for(let i=diff;i>0;i--)
-                {
-                    key+=ciphertext.charAt(j);
-                    j=j+1;
-                    j%=len;
-                }
                 var plaintext="";
-                for(let i=0;i<ciphertext.length;i++)
+                for(var i=0;i<ciphertext.length;i++)
                 {
-                    var temp=(ciphertext.charCodeAt(i)-97) - (key.charCodeAt(i)-97 );
-                    if(temp<0)
-                        temp+=26;
-                    temp+=97;
-                    plaintext+=String.fromCharCode(temp);
+                    var x=ciphertext.charCodeAt(i)-97;
+                    x-=key;
+                    x+=26;
+                    x%=26;
+                    plaintext+=String.fromCharCode(x+97);
                 }
                 document.getElementById("given_plaintext").innerHTML="";
                 document.getElementById("result_ciphertext").innerHTML="";
                 document.getElementById("given_ciphertext").innerHTML="given ciphertext: "+ciphertext;
-                document.getElementById("used_key").innerHTML="key used: "+key.slice(0,len);
+                document.getElementById("used_key").innerHTML="key used: "+key;
                 document.getElementById("result_plaintext").innerHTML="plain text: " + plaintext;
             }
             

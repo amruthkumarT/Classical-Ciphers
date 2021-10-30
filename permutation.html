@@ -9,21 +9,21 @@
        
         <div style="padding: 20px; width:80%; margin:auto; margin-top:30px;">
             <a class="btn btn-primary" href="index.html" role="button" style="float: right;">Home</a>
-            <h1>Permutaiton Cipher</h1>
+            <h1>Permutation Cipher</h1>
             <p>Let <i>m</i> be a positive integer. Let P=C=(ℤ<sub>26</sub>)<sup>m</sup> and let K consists of all permutations of (1,2,....m). For a key &pi; we define <i>e</i><sub>&pi;</sub> (<i>x<sub>1</sub>, x<sub>2</sub>....x<sub>m</sub> = (x<sub>&pi;(1)</sub>,x<sub>&pi;(2)</sub>....x<sub>&pi(m)</sub></i> and  <i>d<sub>&pi;</sub>(y<sub>1</sub>, y<sub>2</sub>.....y<sub>m</sub>) = (y<sub>&pi;<sup>-1</sup>(1)</sub>....y<sub>&pi;<sup>-1</sup>(m)</sub>)</i> where &pi;<sup>-1</sup> is the inverse permutaion of &pi;</p>
        
             <h3>check it out</h3>
             <div class="form-group row">
                 <label class="col-sm-1 col-form-label" >Enter text: </label>
                 <div class="col-sm-10">
-                    <textarea id="text" class="form-control" aria-label="With textarea" placeholder="type plain/cipher text"></textarea>
+                    <textarea id="text" class="form-control" aria-label="With textarea" placeholder="type plain/cipher text">abcdef</textarea>
                     
                 </div>
             </div>
             <div class="form-group row">
                 <label for="key" class="col-sm-1 col-form-label">Enter key: </label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="key" placeholder="enter space seperated digits. eg:- 3 6 2 1 5 4">
+                    <input type="text" class="form-control" id="key" placeholder="enter space seperated digits. eg:- 3 6 2 1 5 4" value="3 2 1">
                 </div>
             </div>
             <button onclick="encrypt()" class="btn btn-primary">Encrypt</button>
@@ -87,9 +87,11 @@
                 var ciphertext="";
                 for(var i=0;i<strlen;i+=keylen)
                 {
+                    var l=0;
                     for(var j=i;j<i+keylen;j++)
                     {
-                        var p=parseInt(key[j]);
+                        var p=parseInt(key[l]);
+                        l++;
                         ciphertext+=plaintext.charAt(i+p-1);
                     }
                 }
@@ -147,9 +149,11 @@
                 var plaintext="";
                 for(var i=0;i<strlen;i+=keylen)
                 {
+                    var l=0;
                     for(var j=i;j<i+keylen;j++)
                     {
-                        var p=parseInt(key[j]);
+                        var p=parseInt(key[l]);
+                        l++;
                         plaintext+=ciphertext.charAt(i+p-1);
                     }
                 }
