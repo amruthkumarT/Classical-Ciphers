@@ -135,12 +135,12 @@
                         a_inv = i;
                     }
                 }
-                window.alert(a_inv);
+                //window.alert(a_inv);
                 
                 for(var i=0;i<ciphertext.length;i++)
                 {
-                    var x=a_inv *((ciphertext.charCodeAt(i) + 97 - b));
-                    x%=26;
+                    var x=ciphertext.charCodeAt(i)-97;
+                    x=(a_inv*(x-b))%26;
                     //window.alert(x);
                     plaintext+=String.fromCharCode(x+97);
                 }
@@ -154,5 +154,6 @@
         </script>
     </body>
 </html>
+
 
 
