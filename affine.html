@@ -140,7 +140,8 @@
                 for(var i=0;i<ciphertext.length;i++)
                 {
                     var x=ciphertext.charCodeAt(i)-97;
-                    x=(a_inv*(x-b))%26;
+                    x=((x-b)+26)%26;
+                    x=(a_inv*x)%26;
                     //window.alert(x);
                     plaintext+=String.fromCharCode(x+97);
                 }
