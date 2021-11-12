@@ -88,12 +88,6 @@
                     window.alert("oops! key is empty");
                     return;
                 }
-                for(let i=diff;i>0;i--)
-                {
-                    key+=ciphertext.charAt(j);
-                    j=j+1;
-                    j%=len;
-                }
                 var plaintext="";
                 for(let i=0;i<ciphertext.length;i++)
                 {
